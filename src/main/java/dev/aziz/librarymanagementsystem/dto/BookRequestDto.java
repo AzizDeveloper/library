@@ -4,38 +4,29 @@ import dev.aziz.librarymanagementsystem.validator.ValidIsbn;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDate;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-public class BookRequestDto {
+public record BookRequestDto(
 
-    @NotBlank(message = "Book title must not be null or empty")
-    private String title;
+        @NotBlank(message = "Title is required")
+        String title,
 
-    @NotBlank(message = "Book author must not be null or empty")
-    private String author;
+        @NotBlank(message = "Author is required")
+        String author,
 
-    @NotBlank(message = "Book ISBN must not be null or empty")
-    @ValidIsbn(allowedLengths = {10, 13}, message = "ISBN length must be exactly 10 or 13 characters")
-    private String isbn;
+        @NotBlank
+        @ValidIsbn(allowedLengths = {10, 13})
+        String isbn,
 
-    @NotNull(message = "Book publication date must not be null")
-    private LocalDate publicationDate;
+        @NotNull
+        LocalDate publicationDate,
 
-    @Positive
-    private Long totalCopies;
+        @Positive
+        Long totalCopies,
 
-    @Positive
-    private Long availableCopies;
+        @Positive
+        Long availableCopies
 
+) {
 }

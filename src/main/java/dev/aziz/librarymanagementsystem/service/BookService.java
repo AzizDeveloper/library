@@ -4,6 +4,7 @@ import dev.aziz.librarymanagementsystem.dto.BookRequestDto;
 import dev.aziz.librarymanagementsystem.dto.BookResponseDto;
 import dev.aziz.librarymanagementsystem.dto.BookUpdateDto;
 import dev.aziz.librarymanagementsystem.entity.Book;
+import dev.aziz.librarymanagementsystem.exception.BusinessConflictException;
 import dev.aziz.librarymanagementsystem.exception.ResourceNotFoundException;
 import dev.aziz.librarymanagementsystem.mapper.BookMapper;
 import dev.aziz.librarymanagementsystem.repository.BookRepository;
@@ -33,6 +34,9 @@ public class BookService {
     }
 
     public BookResponseDto saveBook(BookRequestDto bookRequestDto) {
+        if (bookRepository.existsByIsbn(bookRequestDto.isbn())) {
+            throw new BusinessConflictException("Book with ISBN '%s' already exists.".formatted(bookRequestDto.isbn()));
+        }
         Book book = bookMapper.toBook(bookRequestDto);
         Book savedBook = bookRepository.save(book);
         return bookMapper.toBookResponseDto(savedBook);
@@ -65,4 +69,5 @@ public class BookService {
     public List<Book> getBooksByTitleAndAuthor(String title, String author) {
         return bookRepository.findBooksByTitleAndAuthor(title, author);
     }
+
 }

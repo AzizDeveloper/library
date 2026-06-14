@@ -12,26 +12,26 @@ import java.util.List;
 public class BookMapper {
 
     public BookResponseDto toBookResponseDto(Book book) {
-        BookResponseDto bookResponseDto = new BookResponseDto();
-        bookResponseDto.setId(book.getId());
-        bookResponseDto.setTitle(book.getTitle());
-        bookResponseDto.setAuthor(book.getAuthor());
-        bookResponseDto.setIsbn(book.getIsbn());
-        bookResponseDto.setPublicationDate(book.getPublicationDate());
-        bookResponseDto.setTotalCopies(book.getTotalCopies());
-        bookResponseDto.setAvailableCopies(book.getAvailableCopies());
-        bookResponseDto.setCreatedAt(book.getCreatedAt());
-        return bookResponseDto;
+        return new BookResponseDto(
+                book.getId(),
+                book.getTitle(),
+                book.getAuthor(),
+                book.getIsbn(),
+                book.getPublicationDate(),
+                book.getTotalCopies(),
+                book.getAvailableCopies(),
+                book.getCreatedAt()
+        );
     }
 
     public Book toBook(BookRequestDto bookRequestDto) {
         Book book = new Book();
-        book.setTitle(bookRequestDto.getTitle());
-        book.setAuthor(bookRequestDto.getAuthor());
-        book.setIsbn(bookRequestDto.getIsbn());
-        book.setPublicationDate(bookRequestDto.getPublicationDate());
-        book.setTotalCopies(bookRequestDto.getTotalCopies());
-        book.setAvailableCopies(bookRequestDto.getAvailableCopies());
+        book.setTitle(bookRequestDto.title());
+        book.setAuthor(bookRequestDto.author());
+        book.setIsbn(bookRequestDto.isbn());
+        book.setPublicationDate(bookRequestDto.publicationDate());
+        book.setTotalCopies(bookRequestDto.totalCopies());
+        book.setAvailableCopies(bookRequestDto.availableCopies());
         return book;
     }
 
@@ -39,14 +39,10 @@ public class BookMapper {
         if (books == null || books.isEmpty()) {
             return List.of();
         }
-
-        // Pre-allocate the exact size needed to prevent internal array resizing
         List<BookResponseDto> dtos = new ArrayList<>(books.size());
-
         for (Book book : books) {
             dtos.add(toBookResponseDto(book));
         }
-
         return dtos;
     }
 
