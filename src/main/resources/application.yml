@@ -10,16 +10,20 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: create
+#      ddl-auto: validate
     show-sql: false
     properties:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
-  liquibase:
-    change-log: classpath:db/changelog/db.changelog-master.yml
+#  liquibase:
+#    change-log: classpath:db/changelog/db.changelog-master.yml
 
-
+  # Disable static resource mapping so it doesn't swallow 404s trying to find a file named "boo"
+  web:
+    resources:
+      add-mappings: false
 
 server:
   port: 8080
