@@ -2,7 +2,9 @@ package dev.aziz.librarymanagementsystem;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
+@EnableScheduling
 @SpringBootApplication
 public class LibraryManagementSystemApplication {
 
@@ -10,4 +12,8 @@ public class LibraryManagementSystemApplication {
         SpringApplication.run(LibraryManagementSystemApplication.class, args);
     }
 
+    //TODO: adding AOP or simple logging.
+    //      adding Metrics
+    //      adding profiles (dev, prod)
+    //      adding retry mechanism
 }

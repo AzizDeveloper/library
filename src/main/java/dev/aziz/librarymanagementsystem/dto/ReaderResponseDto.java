@@ -5,6 +5,7 @@ public record ReaderResponseDto(
         String firstName,
         String lastName,
         String username,
-        String email
+        String email,
+        String phoneNumber
 ) {
 }

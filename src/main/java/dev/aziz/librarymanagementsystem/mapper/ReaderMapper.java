@@ -17,12 +17,18 @@ public class ReaderMapper {
         reader.setLastName(readerRequestDto.lastName());
         reader.setUsername(readerRequestDto.username());
         reader.setEmail(readerRequestDto.email());
+        reader.setPhoneNumber(readerRequestDto.phoneNumber());
         return reader;
     }
 
     public ReaderResponseDto toReaderResponseDto(Reader reader){
         return new ReaderResponseDto(
-                reader.getId(), reader.getFirstName(), reader.getLastName(), reader.getUsername(), reader.getEmail()
+                reader.getId(),
+                reader.getFirstName(),
+                reader.getLastName(),
+                reader.getUsername(),
+                reader.getEmail(),
+                reader.getPhoneNumber()
         );
     }
 

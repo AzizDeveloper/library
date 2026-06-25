@@ -36,8 +36,8 @@ public class ReaderController {
     }
 
     @PostMapping
-    public ResponseEntity<ReaderResponseDto> createReader(@RequestBody @Valid ReaderRequestDto readerDto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(readerService.createReader(readerDto));
+    public ResponseEntity<ReaderResponseDto> createReader(@RequestBody @Valid ReaderRequestDto readerRequestDto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(readerService.createReader(readerRequestDto));
     }
 
     @PutMapping("/{id}")

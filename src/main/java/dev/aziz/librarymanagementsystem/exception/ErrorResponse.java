@@ -1,4 +1,4 @@
-package dev.aziz.librarymanagementsystem.dto;
+package dev.aziz.librarymanagementsystem.exception;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 

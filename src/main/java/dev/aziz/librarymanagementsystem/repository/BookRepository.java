@@ -9,7 +9,6 @@ import java.util.List;
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
 
-    // TODO: Maybe write sql script manually.
     List<Book> findBooksByTitleAndAuthor(String title, String author);
 
     boolean existsByIsbn(String isbn);
