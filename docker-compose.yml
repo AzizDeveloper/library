@@ -10,6 +10,30 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    networks:
+      - library_network
+
+  java-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/library_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+      - "5005:5005"
+    volumes:
+      - ./logs:/app/logs
+    networks:
+      - library_network
 
 volumes:
   pgdata:
+
+networks:
+  library_network:

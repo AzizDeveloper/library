@@ -76,7 +76,8 @@ public class BookLoanService {
 
     public List<BookLoanResponse> getOverdueBookLoans() {
         return bookLoanMapper.toBookLoanResponseList(
-                bookLoanRepository.findByStatusWithFetch(Status.OVERDUE)
+                bookLoanRepository.findByStatusOverdueWithFetch(Status.OVERDUE)
         );
     }
+
 }

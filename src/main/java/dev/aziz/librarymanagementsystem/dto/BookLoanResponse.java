@@ -1,7 +1,5 @@
 package dev.aziz.librarymanagementsystem.dto;
 
-import dev.aziz.librarymanagementsystem.entity.Book;
-import dev.aziz.librarymanagementsystem.entity.Reader;
 import dev.aziz.librarymanagementsystem.entity.Status;
 
 import java.time.LocalDate;
@@ -14,7 +12,5 @@ public record BookLoanResponse(
         Status status,
         ReaderResponseDto readerResponseDto,
         BookResponseDto bookResponseDto
-//        Reader reader,
-//        Book book
 ) {
 }

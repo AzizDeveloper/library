@@ -10,8 +10,10 @@ import dev.aziz.librarymanagementsystem.mapper.BookMapper;
 import dev.aziz.librarymanagementsystem.repository.BookRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,6 +21,7 @@ import java.util.List;
 public class BookService {
 
     private final BookRepository bookRepository;
+    private final BookSpecifications bookSpecifications;
     private final BookMapper bookMapper;
 
     public List<BookResponseDto> getAllBooks() {
@@ -27,9 +30,8 @@ public class BookService {
     }
 
     public BookResponseDto getBookById(Long id) {
-        Book book = bookRepository.findById(id).orElseThrow(() -> {
-            throw new ResourceNotFoundException("Book", "id", id);
-        });
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Book", "id", id));
         return bookMapper.toBookResponseDto(book);
     }
 
@@ -66,8 +68,23 @@ public class BookService {
         bookRepository.deleteById(id);
     }
 
-    public List<Book> getBooksByTitleAndAuthor(String title, String author) {
-        return bookRepository.findBooksByTitleAndAuthor(title, author);
+    public List<BookResponseDto> getBooksByTitleAndAuthor(String title, String author) {
+        List<Specification<Book>> specs = new ArrayList<>();
+
+        if (title != null && !title.isBlank()) {
+            specs.add(bookSpecifications.titleContains(title));
+        }
+
+        if (author != null && !author.isBlank()) {
+            specs.add(bookSpecifications.authorContains(author));
+        }
+        Specification<Book> spec = specs.stream()
+                .reduce(Specification::and)
+                .orElseThrow(() ->
+                        new IllegalArgumentException(
+                                "At least one search parameter is required"));
+
+        return bookMapper.toBookResponseDtoList(bookRepository.findAll(spec));
     }
 
 }

@@ -16,17 +16,11 @@ public interface BookLoanRepository extends JpaRepository<BookLoan, Long> {
 
     List<BookLoan> findBookLoanByReaderId(Long readerId);
 
-    List<BookLoan> findByDueDateBeforeAndReturnDateIsNull(LocalDate date);
-
-    List<BookLoan> findByStatus(Status status);
-
     @Query("SELECT bl FROM BookLoan bl " +
             "JOIN FETCH bl.book " +
             "JOIN FETCH bl.reader " +
             "WHERE bl.status = :status")
-    List<BookLoan> findByStatusWithFetch(@Param("status") Status status);
-
-    List<BookLoan> findByStatusAndDueDateBeforeAndReturnDateIsNull(Status status, LocalDate date);
+    List<BookLoan> findByStatusOverdueWithFetch(@Param("status") Status status);
 
     @Modifying
     @Query("UPDATE BookLoan bl SET bl.status = :newStatus " +

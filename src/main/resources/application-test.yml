@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: library-management-system
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master-test.yml
+
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api
