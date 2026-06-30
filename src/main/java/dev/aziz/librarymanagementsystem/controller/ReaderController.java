@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +31,7 @@ public class ReaderController {
         return ResponseEntity.ok(readerService.getAllReaders());
     }
 
+    @PreAuthorize("hasRole('ADMIN') or @readerSecurity.isOwner(#id, authentication)")
     @GetMapping("/{id}")
     public ResponseEntity<ReaderResponseDto> getReaderById(@PathVariable Long id) {
         return ResponseEntity.ok(readerService.getReaderById(id));
@@ -40,6 +42,7 @@ public class ReaderController {
         return ResponseEntity.status(HttpStatus.CREATED).body(readerService.createReader(readerRequestDto));
     }
 
+    @PreAuthorize("@readerSecurity.isOwner(#id, authentication)")
     @PutMapping("/{id}")
     public ResponseEntity<ReaderResponseDto> updateReader(
             @PathVariable Long id,
@@ -47,6 +50,7 @@ public class ReaderController {
         return ResponseEntity.ok(readerService.updateReader(id, readerDto));
     }
 
+    @PreAuthorize("@readerSecurity.isOwner(#id, authentication)")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteReader(@PathVariable Long id) {
         readerService.deleteReader(id);

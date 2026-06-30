@@ -1,6 +1,5 @@
 package dev.aziz.librarymanagementsystem.scheduler;
 
-import dev.aziz.librarymanagementsystem.entity.BookLoan;
 import dev.aziz.librarymanagementsystem.entity.Status;
 import dev.aziz.librarymanagementsystem.repository.BookLoanRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Slf4j
 @Component
