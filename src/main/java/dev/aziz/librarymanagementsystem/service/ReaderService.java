@@ -7,9 +7,9 @@ import dev.aziz.librarymanagementsystem.exception.BusinessConflictException;
 import dev.aziz.librarymanagementsystem.exception.ResourceNotFoundException;
 import dev.aziz.librarymanagementsystem.mapper.ReaderMapper;
 import dev.aziz.librarymanagementsystem.repository.ReaderRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -45,10 +45,15 @@ public class ReaderService {
         Reader foundReader = readerRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Reader", "id", id));
 
+        if (!foundReader.getEmail().equals(readerRequestDto.email()) && readerRepository.existsByEmail(readerRequestDto.email())) {
+            throw new BusinessConflictException("Reader with that email address already exists");
+        }
+
         foundReader.setFirstName(readerRequestDto.firstName());
         foundReader.setLastName(readerRequestDto.lastName());
         foundReader.setUsername(readerRequestDto.username());
         foundReader.setEmail(readerRequestDto.email());
+        foundReader.setPhoneNumber(readerRequestDto.phoneNumber());
 
         Reader updatedReader = readerRepository.save(foundReader);
         return readerMapper.toReaderResponseDto(updatedReader);

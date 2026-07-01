@@ -3,7 +3,6 @@ package dev.aziz.librarymanagementsystem.controller;
 import dev.aziz.librarymanagementsystem.dto.BookRequestDto;
 import dev.aziz.librarymanagementsystem.dto.BookResponseDto;
 import dev.aziz.librarymanagementsystem.dto.BookUpdateDto;
-import dev.aziz.librarymanagementsystem.entity.Book;
 import dev.aziz.librarymanagementsystem.service.BookService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +32,7 @@ public class BookController {
         return ResponseEntity.ok(bookService.getAllBooks());
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<BookResponseDto> getBookById(@PathVariable Long id) {
         return ResponseEntity.ok(bookService.getBookById(id));
     }
@@ -43,13 +42,13 @@ public class BookController {
         return ResponseEntity.status(HttpStatus.CREATED).body(bookService.saveBook(book));
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public  ResponseEntity<BookResponseDto> updateBook(
-            @PathVariable Long id, @RequestBody BookUpdateDto bookUpdateDto) {
+            @PathVariable Long id, @RequestBody @Valid BookUpdateDto bookUpdateDto) {
         return ResponseEntity.ok(bookService.updateBookById(id, bookUpdateDto));
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
         bookService.deleteBookById(id);
         return ResponseEntity.noContent().build();

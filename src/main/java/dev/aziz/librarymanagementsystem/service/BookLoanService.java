@@ -13,9 +13,9 @@ import dev.aziz.librarymanagementsystem.mapper.BookLoanMapper;
 import dev.aziz.librarymanagementsystem.repository.BookLoanRepository;
 import dev.aziz.librarymanagementsystem.repository.BookRepository;
 import dev.aziz.librarymanagementsystem.repository.ReaderRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -64,8 +64,7 @@ public class BookLoanService {
             throw new BookAlreadyReturnedException("This book was already returned.");
         }
 
-        Book book = bookRepository.findById(bookLoan.getBook().getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Book", "id", bookLoan.getBook().getId()));
+        Book book = bookLoan.getBook();
         book.setAvailableCopies(book.getAvailableCopies() + 1);
 
         bookLoan.setReturnDate(LocalDate.now());

@@ -1,6 +1,5 @@
 package dev.aziz.librarymanagementsystem.scheduler;
 
-import dev.aziz.librarymanagementsystem.entity.BookLoan;
 import dev.aziz.librarymanagementsystem.entity.Status;
 import dev.aziz.librarymanagementsystem.repository.BookLoanRepository;
 import lombok.RequiredArgsConstructor;
@@ -9,8 +8,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.time.LocalDate;
-import java.util.List;
 
 @Slf4j
 @Component
@@ -19,14 +18,15 @@ public class OverdueLoanScheduler {
 
     private final BookLoanRepository bookLoanRepository;
 
-    @Scheduled(cron = "0 26 15 * * *")
+    @Scheduled(cron = "${scheduler.overdue-check.cron:0 0 0 * * *}")
     @Transactional
     public void markOverdueLoans() {
         log.info("Checking for overdue loans...");
 
         int updatedCount = bookLoanRepository.markAllOverdueLoans(
                 Status.OVERDUE, Status.ISSUED, LocalDate.now());
-
+        Instant.now();
         log.info("Marked {} book loans as overdue", updatedCount);
     }
+
 }

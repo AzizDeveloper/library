@@ -1,13 +1,13 @@
 package dev.aziz.librarymanagementsystem.service;
 
 import dev.aziz.librarymanagementsystem.entity.Book;
+import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 @Component
+@NoArgsConstructor
 public class BookSpecifications {
-
-    private BookSpecifications() {}
 
     public Specification<Book> titleContains(String title) {
         return (root, query, cb) ->

@@ -8,10 +8,10 @@ import dev.aziz.librarymanagementsystem.exception.BusinessConflictException;
 import dev.aziz.librarymanagementsystem.exception.ResourceNotFoundException;
 import dev.aziz.librarymanagementsystem.mapper.BookMapper;
 import dev.aziz.librarymanagementsystem.repository.BookRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,27 +44,29 @@ public class BookService {
         return bookMapper.toBookResponseDto(savedBook);
     }
 
-    public Book updateBook(Book book) {
-        return bookRepository.save(book);
-    }
-
     @Transactional
     public BookResponseDto updateBookById(Long id, BookUpdateDto bookUpdateDto) {
-        Book foundBook = bookRepository.findById(id).orElseThrow(() -> {
-            throw new ResourceNotFoundException("Book", "id", id);
-        });
-        foundBook.setTitle(bookUpdateDto.getTitle());
-        foundBook.setAuthor(bookUpdateDto.getAuthor());
-        foundBook.setAvailableCopies(bookUpdateDto.getAvailableCopies());
-        foundBook.setTotalCopies(bookUpdateDto.getTotalCopies());
-        foundBook.setPublicationDate(bookUpdateDto.getPublicationDate());
-        foundBook.setIsbn(bookUpdateDto.getIsbn());
+        Book foundBook = bookRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Book", "id", id));
+        if (!foundBook.getIsbn().equals(bookUpdateDto.isbn()) && bookRepository.existsByIsbn(bookUpdateDto.isbn())) {
+            throw new BusinessConflictException("Book with ISBN '%s' already exists.".formatted(bookUpdateDto.isbn()));
+        }
+
+        foundBook.setTitle(bookUpdateDto.title());
+        foundBook.setAuthor(bookUpdateDto.author());
+        foundBook.setAvailableCopies(bookUpdateDto.availableCopies());
+        foundBook.setTotalCopies(bookUpdateDto.totalCopies());
+        foundBook.setPublicationDate(bookUpdateDto.publicationDate());
+        foundBook.setIsbn(bookUpdateDto.isbn());
 
         Book updatedBook = bookRepository.save(foundBook);
         return bookMapper.toBookResponseDto(updatedBook);
     }
 
     public void deleteBookById(Long id) {
+        if (!bookRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Book", "id", id);
+        }
         bookRepository.deleteById(id);
     }
 

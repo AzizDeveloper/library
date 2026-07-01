@@ -28,7 +28,8 @@ public class ReaderMapper {
                 reader.getLastName(),
                 reader.getUsername(),
                 reader.getEmail(),
-                reader.getPhoneNumber()
+                reader.getPhoneNumber(),
+                reader.getCreatedAt()
         );
     }
 

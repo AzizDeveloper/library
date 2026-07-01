@@ -17,11 +17,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 public @interface ValidIsbn {
 
-    String message() default "Invalid ISBN length. Must be 10 or 13 characters.";
-
+    String message() default "Invalid ISBN. ISBN must be valid or must be 10 or 13 characters.";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
-
-    int[] allowedLengths() default {10, 13};
 
 }

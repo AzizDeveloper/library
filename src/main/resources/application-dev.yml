@@ -4,8 +4,8 @@ spring:
 
   datasource:
     url: jdbc:postgresql://localhost:5432/library_db
-    username: postgres
-    password: postgres
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -23,3 +23,7 @@ server:
   port: 8080
   servlet:
     context-path: /api
+
+scheduler:
+  overdue-check:
+    cron: ${SCHEDULER_OVERDUE_CHECK_CRON}

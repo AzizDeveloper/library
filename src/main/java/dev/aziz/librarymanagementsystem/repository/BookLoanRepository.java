@@ -14,7 +14,8 @@ import java.util.List;
 @Repository
 public interface BookLoanRepository extends JpaRepository<BookLoan, Long> {
 
-    List<BookLoan> findBookLoanByReaderId(Long readerId);
+    @Query("SELECT bl FROM BookLoan bl JOIN FETCH bl.book JOIN FETCH bl.reader WHERE bl.reader.id = :readerId")
+    List<BookLoan> findBookLoanByReaderId(@Param("readerId") Long readerId);
 
     @Query("SELECT bl FROM BookLoan bl " +
             "JOIN FETCH bl.book " +

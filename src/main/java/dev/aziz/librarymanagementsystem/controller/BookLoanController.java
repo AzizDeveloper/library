@@ -5,6 +5,8 @@ import dev.aziz.librarymanagementsystem.dto.BookLoanResponse;
 import dev.aziz.librarymanagementsystem.service.BookLoanService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,23 +25,23 @@ public class BookLoanController {
     private final BookLoanService bookLoanService;
 
     @PostMapping
-    public BookLoanResponse createBookLoan(@RequestBody @Valid BookLoanRequest bookLoanRequest) {
-        return bookLoanService.createBookLoan(bookLoanRequest);
+    public ResponseEntity<BookLoanResponse> createBookLoan(@RequestBody @Valid BookLoanRequest bookLoanRequest) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(bookLoanService.createBookLoan(bookLoanRequest));
     }
 
     @PutMapping("/{id}/return")
-    public BookLoanResponse returnBook(@PathVariable Long id) {
-        return bookLoanService.returnBook(id);
+    public ResponseEntity<BookLoanResponse> returnBook(@PathVariable Long id) {
+        return ResponseEntity.ok(bookLoanService.returnBook(id));
     }
 
     @GetMapping("/reader/{readerId}")
-    public List<BookLoanResponse> readBookLoan(@PathVariable Long readerId) {
-        return bookLoanService.getBookLoansByReaderId(readerId);
+    public ResponseEntity<List<BookLoanResponse>> getBookLoansByReader(@PathVariable Long readerId) {
+        return ResponseEntity.ok(bookLoanService.getBookLoansByReaderId(readerId));
     }
 
     @GetMapping("/overdue")
-    public List<BookLoanResponse> overdueBookLoan() {
-        return bookLoanService.getOverdueBookLoans();
+    public ResponseEntity<List<BookLoanResponse>> overdueBookLoan() {
+        return ResponseEntity.ok(bookLoanService.getOverdueBookLoans());
     }
 
 }
